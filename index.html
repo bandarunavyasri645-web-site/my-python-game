@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+        h1 {
+            color: #1a73e8;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            margin: 1.5rem 0;
+        }
+        input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            width: 120px;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #1557b0;
+        }
+        .feedback {
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+            min-height: 1.5rem;
+        }
+        #triesCount {
+            color: #666;
+        }
+        #resetButton {
+            margin-top: 1rem;
+            background-color: #34a853;
+        }
+        #resetButton:hover {
+            background-color: #2d8e47;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 Welcome to Guess the Number!</h1>
+        <p>I'm thinking of a number between 1 and 10.</p>
+
+        <div class="input-group">
+            <input type="number" id="guessInput" min="1" max="10" placeholder="Enter your guess">
+            <button id="guessButton">Guess</button>
+        </div>
+
+        <div id="feedback" class="feedback"></div>
+        <p id="triesCount"></p>
+
+        <button id="resetButton" style="display: none;">Play Again</button>
+    </div>
+
+    <script>
+        let targetNumber;
+        let tries = 0;
+        const guessInput = document.getElementById('guessInput');
+        const guessButton = document.getElementById('guessButton');
+        const feedback = document.getElementById('feedback');
+        const triesCount = document.getElementById('triesCount');
+        const resetButton = document.getElementById('resetButton');
+
+        function initGame() {
+            targetNumber = Math.floor(Math.random() * 10) + 1;
+            tries = 0;
+            guessInput.value = '';
+            guessInput.disabled = false;
+            guessButton.disabled = false;
+            feedback.textContent = '';
+            triesCount.textContent = '';
+            resetButton.style.display = 'none';
+        }
+
+        function checkGuess() {
+            const guess = parseInt(guessInput.value);
+
+            if (isNaN(guess) || guess < 1 || guess > 10) {
+                feedback.textContent = '❌ Please enter a number between 1 and 10.';
+                feedback.style.color = '#d93025';
+                return;
+            }
+
+            tries++;
+
+            if (guess < targetNumber) {
+                feedback.textContent = '📉 Too low! Try again.';
+                feedback.style.color = '#1a73e8';
+            } else if (guess > targetNumber) {
+                feedback.textContent = '📈 Too high! Try again.';
+                feedback.style.color = '#1a73e8';
+            } else {
+                feedback.textContent = `🎉 Correct! You got it in ${tries} tries!`;
+                feedback.style.color = '#34a853';
+                endGame();
+            }
+
+            guessInput.value = '';
+            guessInput.focus();
+        }
+
+        function endGame() {
+            guessInput.disabled = true;
+            guessButton.disabled = true;
+            resetButton.style.display = 'inline-block';
+        }
+
+        guessButton.addEventListener('click', checkGuess);
+        guessInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                checkGuess();
+            }
+        });
+        resetButton.addEventListener('click', initGame);
+
+        // Initialize on load
+        initGame();
+    </script>
+</body>
+</html>
