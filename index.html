@@ -72,7 +72,7 @@
 <body>
     <div class="container">
         <h1>🎮 Welcome to Guess the Number!</h1>
-        <p>I'm thinking of a number between 1 and 10.</p>
+        <p>I'm thinking of a number between 1 and 100.</p>
 
         <div class="input-group">
             <input type="number" id="guessInput" min="1" max="10" placeholder="Enter your guess">
@@ -108,8 +108,8 @@
         function checkGuess() {
             const guess = parseInt(guessInput.value);
 
-            if (isNaN(guess) || guess < 1 || guess > 10) {
-                feedback.textContent = '❌ Please enter a number between 1 and 10.';
+            if (isNaN(guess) || guess < 1 || guess > 100) {
+                feedback.textContent = '❌ Please enter a number between 1 and 100.';
                 feedback.style.color = '#d93025';
                 return;
             }
